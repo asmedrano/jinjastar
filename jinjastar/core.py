@@ -1,12 +1,18 @@
 from jinja2 import Environment, FileSystemLoader
-import os
+import os, shutil
+import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+lfh = logging.StreamHandler()
+formatter = logging.Formatter('%(asctime)s - %(levelname)s : %(message)s')
+lfh.setFormatter(formatter)
+logger.addHandler(lfh)
 
 def main(template_path, output_path='/tmp/rendered_templates'):
     loader = FileSystemLoader(template_path)
     env = Environment(loader=loader)
     render_dir(env, template_path, output_path)
-
 
 def render_dir(env, template_path, output_path):
     """ Iterate the template path and render all the files
@@ -34,10 +40,13 @@ def render_dir(env, template_path, output_path):
             else:
                 t_path = file
 
-            if fileext in ['.html', '.js', '.css']:
+            if fileext in ['.html']:
+                logger.info('Rendering %s' % t_path)
                 t = env.get_template(t_path)
                 output = t.render()
                 write_file(os.path.join(output_path, t_path), output)
+            elif fileext in ['.css','.js','.jpg','.gif','.png']:# TODO: what should i do with static files?
+                shutil.copy2(os.path.join(template_path, t_path), os.path.join(output_path, t_path.replace(file,'')))
 
 def write_file(target, content):
     f = open(target, 'w')
