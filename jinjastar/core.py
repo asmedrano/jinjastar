@@ -14,6 +14,9 @@ def render_dir(env, template_path, output_path):
         dirs are a list os subdirectorys
         files are the actual files
     """
+    #clean template path
+    template_path = os.path.realpath(template_path)
+
     # First lets create a directory to output into
     if not os.path.exists(output_path):
         os.makedirs(output_path)
