@@ -110,7 +110,10 @@ subpage.html
 </html>
 ```
 
-## Learn more about jijna templates here http://jinja.pocoo.org/docs/templates/
+## Learn more about jijna templates 
+Jinja docs http://jinja.pocoo.org/docs/templates/
+
+There are a lot of features that are possible with jinja that we cant take advatage of yet, but I will be adding some in the near future.
 
 ##TODO
 * Add ability to include data as json and other formats and render in templates.
