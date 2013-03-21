@@ -1,7 +1,10 @@
 
-##Installing Node
-https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager
+## Why?
+I started working on my own personal website and thought I'd go the static file route. There are other more feature rich static file doodads out there but I rolled my own.
 
-##Installing the H5BP tools
-https://github.com/h5bp/node-build-script
-I used ```npm install http://github.com/h5bp/node-build-script/tarball/master -g```
+## What is it?
+A wrapper around Jinja2 that'll lets you render jinja templates to Static html files
+
+##TODO
+* Add ability to include data as json and other formats and render in templates.
+* Compressor/Minify ?
