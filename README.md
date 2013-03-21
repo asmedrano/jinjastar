@@ -6,6 +6,8 @@ A wrapper around Jinja2 that'll lets you render jinja templates to Static html f
 
 ## Sample Usage
 ``` jstar.py -d ~/path/to/my_files -o /path/for/output ```
+``` -d``` is the path to your project
+``` -o``` is the path to a directory you want the templates to render to
 
 ## Example
 Say you have a project that looks like this
@@ -59,7 +61,7 @@ The ```block``` part is the important bit.
 ```
 
 We would then run ```jstar.py -d ~/path/to/your_project -o /path/to/somedir``` and we'd end up with a mirror of our project
-except that the templates have now been rendered and the files now look like this.
+except that the templates have now been rendered and the files now look like this
 
 index.html
 
