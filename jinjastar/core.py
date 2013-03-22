@@ -1,5 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 import os, shutil
+import markdown
 import logging
 
 logger = logging.getLogger(__name__)
@@ -12,6 +13,7 @@ logger.addHandler(lfh)
 def main(template_path, output_path='/tmp/rendered_templates'):
     loader = FileSystemLoader(template_path)
     env = Environment(loader=loader)
+    env.filters['markdown'] = safe_markdown
     render_dir(env, template_path, output_path)
 
 def render_dir(env, template_path, output_path):
@@ -52,3 +54,6 @@ def write_file(target, content):
     f = open(target, 'w')
     f.write(content)
     f.close()
+
+def safe_markdown(text):
+    return jinja2.Markup(markdown.markdown(text))
