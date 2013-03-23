@@ -1,6 +1,7 @@
 import os
 import re
 from utils import *
+from jinja2 import evalcontextfilter
 
 def get_content_item_meta(path):
     """ The first N lines of a content file contain the meta data for this item. Return the metatdata for given item"""
@@ -59,4 +60,12 @@ def content_block(content):
     return out
 
 
-
+# custom jinja2 filters
+@evalcontextfilter
+def get_files_list(context, target_dir, file_ext, recursive=True):
+    """ Returns an iterable of files.
+        target_dir is relative to the render_input_path
+    """
+    path = os.path.join(context.environment.globals['render_input_path'], target_dir)
+    files = collect_items(path, [file_ext])
+    return [f['cleaned_path'] for f in files]

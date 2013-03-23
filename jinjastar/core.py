@@ -31,7 +31,10 @@ def render(template_path, render_input_path, output_path='/tmp/rendered_template
     loader = FileSystemLoader(template_dirs)
     env = Environment(loader=loader)
     env.filters['markdown'] = safe_markdown
-
+    env.filters['get_files_list'] = get_files_list
+    env.globals['template_path'] = template_path
+    env.globals['render_input_path'] = render_input_path
+    env.globals['output_path'] = output_path
 
     basic_render(env, template_path, render_input_path, output_path)
 

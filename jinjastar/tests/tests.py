@@ -38,6 +38,14 @@ class TestContentRender(TestCase):
         collected = collect_items(self.content_path)
         self.assertEqual(collected, items)
 
+    def test_collect_items_ingore_dirs(self):
+        items = [{'realpath': self.template_path + '/base.html',
+                  'parentdir': '', 'cleaned_path': 'base.html', 'file': 'base.html'},
+                 {'realpath': self.template_path + '/subtemplates/subpage.html',
+                  'parentdir': 'subtemplates', 'cleaned_path': 'subtemplates/subpage.html', 'file': 'subpage.html'}]
+        collected = collect_items(self.template_path, valid_file_ext=[".html"],ignore_dirs=['subsubtemplate'])
+        self.assertEqual(collected, items)
+
     def test_get_meta(self):
         collected = collect_items(self.content_path)
         # open the index file
