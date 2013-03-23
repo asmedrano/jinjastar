@@ -7,6 +7,7 @@ SEE: http://docs.python.org/library/unittest.html#test-discovery
 from unittest import TestCase, main
 from jinjastar.core import *
 from jinjastar.content import *
+from jinjastar.utils import *
 import os
 
 class TestRender(TestCase):
@@ -17,7 +18,7 @@ class TestRender(TestCase):
 
     def test_dir_render(self):
         """ For now im just looking to see that things are in /tmp """
-        main(self.template_path, self.template_path)
+        render(self.template_path, self.template_path)
 
     def tearDown(self):
         pass
@@ -34,23 +35,23 @@ class TestContentRender(TestCase):
                  {'realpath': self.content_path + "/"+'subpages/more.md','parentdir':'subpages', 'cleaned_path': 'subpages/more.md', 'file': 'more.md'},
                  {'realpath': self.content_path + "/"+'articles/article1.md','parentdir':'articles', 'cleaned_path': 'articles/article1.md', 'file': 'article1.md'},
                  {'realpath': self.content_path + "/"+'articles/article2.md', 'parentdir':'articles','cleaned_path': 'articles/article2.md', 'file': 'article2.md'}]
-        collected = collect_items(self.content_path, '')
+        collected = collect_items(self.content_path)
         self.assertEqual(collected, items)
 
     def test_get_meta(self):
-        collected = collect_items(self.content_path, '')
+        collected = collect_items(self.content_path)
         # open the index file
         meta = get_content_item_meta(collected[0]['realpath'])
         self.assertEqual(meta, {'template': 'base.html', 'title': 'Home Page'})
 
     def test_get_meta_bad(self):
-        collected = collect_items(self.content_path, '')
+        collected = collect_items(self.content_path)
         # open the bad file
         meta = get_content_item_meta(collected[1]['realpath'])
         self.assertEqual(meta,None)
 
     def test_get_content(self):
-        collected = collect_items(self.content_path, '')
+        collected = collect_items(self.content_path)
         content = get_item_content(collected[0]['realpath'])
         test_content = '\n# Hello World!\nThis is a bunch of text that i have written\nthis is more text writen in markdown\n'
         self.assertEqual(content, test_content)
@@ -59,8 +60,7 @@ class TestContentRender(TestCase):
         generate_items(self.content_path)
 
     def test_render_content(self):
-        render_content(self.template_path, self.content_path, '/tmp/test_content')
-
+        render_content(self.content_path, self.template_path)
 
 if __name__ == '__main__':
     main()

@@ -1,5 +1,5 @@
 title:Article2
-template:article.html
+template:base.html
 content:
 # Hello World!
 This is a bunch of text that i have written

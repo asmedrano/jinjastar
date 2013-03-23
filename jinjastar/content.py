@@ -1,21 +1,6 @@
-import os, shutil
+import os
 import re
-from core import main
-
-def collect_items(path_to_content, target, valid_file_ext=['.md']):
-    """ Retrieve all the items in target from content directory"""
-    path = os.path.realpath(os.path.join(path_to_content, target))
-    items = []
-
-    for root, dirs, files in os.walk(path):
-        for file in files:
-            filename, fileext = os.path.splitext(file)
-            if fileext in valid_file_ext:
-                realpath = root + '/' + file
-                parent_dir = os.path.dirname(realpath.replace(path + "/",''))
-                items.append({'file':file, 'realpath':realpath, 'cleaned_path':realpath.replace(path + "/",''), 'parentdir':parent_dir})
-
-    return items
+from utils import *
 
 def get_content_item_meta(path):
     """ The first N lines of a content file contain the meta data for this item. Return the metatdata for given item"""
@@ -47,7 +32,7 @@ def generate_items(path_to_content):
     if not os.path.exists(output_path):
         os.makedirs(output_path)
 
-    items = collect_items(path_to_content,'')
+    items = collect_items(path_to_content)
     for item in items:
         rp = item['realpath']
         fn = item['file'].replace('.md','.html')
@@ -72,22 +57,6 @@ def content_block(content):
     """ Create a jinja2 content block"""
     out = '''\n{{% block content %}}\n{{%filter markdown%}}\n{0}\n{{%endfilter%}}\n{{%endblock%}}'''.format(content)
     return out
-
-def render_content(template_dir, content_dir, out_dir):
-    """ Render the generated jinja templates
-        In order to perserve some code I've already written I'm gonna do some silly stuff here
-        TODO:Refactor!
-    """
-    # copy all static files to the out_dir
-    static_files = collect_items(template_dir, '', ['.css','.js','.jpg','.gif','.png'])
-    for sf in static_files:
-        if not os.path.exists(os.path.join(out_dir, sf['parentdir'])):
-            os.makedirs(os.path.join(out_dir, sf['parentdir']))
-
-        shutil.copy2(sf['realpath'], os.path.join(out_dir,sf['parentdir']))
-
-    #finally render the intermediary content
-    main(template_dir, '/tmp/jstar_temp', out_dir)
 
 
 
