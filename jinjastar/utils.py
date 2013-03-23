@@ -1,4 +1,5 @@
 import os, shutil
+import imp
 
 def collect_items(path_to_content,valid_file_ext=['.md'], ignore_dirs=[]):
     """ Retrieve all the items in target from content directory
@@ -33,3 +34,12 @@ def mkdir_if_not_exist(path):
     if not os.path.exists(path):
         os.makedirs(path)
 
+def load_module(path_to_module):
+    try:
+        f, filename, description = imp.find_module('filters', [os.path.dirname(path_to_module)])
+        filters = imp.load_module('filters', f, filename, description)
+        f.close()
+        return filters
+    except ImportError:
+        print "Could not find %s" % path_to_module
+        return None

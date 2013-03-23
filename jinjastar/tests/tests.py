@@ -10,20 +10,8 @@ from jinjastar.content import *
 from jinjastar.utils import *
 import os
 
-class TestRender(TestCase):
-    """ Tests the most basic functionalilty of the tool"""
 
-    def setUp(self):
-        self.template_path= os.path.join(os.path.dirname(__file__),'templates')
-
-    def test_dir_render(self):
-        """ For now im just looking to see that things are in /tmp """
-        render(self.template_path, self.template_path)
-
-    def tearDown(self):
-        pass
-
-class TestContentRender(TestCase):
+class TestUtils(TestCase):
 
     def setUp(self):
         self.template_path=os.path.realpath( os.path.join(os.path.dirname(__file__),'templates'))
@@ -45,6 +33,30 @@ class TestContentRender(TestCase):
                   'parentdir': 'subtemplates', 'cleaned_path': 'subtemplates/subpage.html', 'file': 'subpage.html'}]
         collected = collect_items(self.template_path, valid_file_ext=[".html"],ignore_dirs=['subsubtemplate'])
         self.assertEqual(collected, items)
+
+    def test_module_import(self):
+        module = load_module(os.path.join(os.path.dirname(__file__), 'filters.py'))
+        self.assertTrue(hasattr(module, 'filters'))
+
+class TestRender(TestCase):
+    """ Tests the most basic functionalilty of the tool"""
+
+    def setUp(self):
+        self.template_path= os.path.join(os.path.dirname(__file__),'templates')
+
+    def test_dir_render(self):
+        """ For now im just looking to see that things are in /tmp """
+        render(self.template_path, self.template_path)
+
+    def tearDown(self):
+        pass
+
+class TestContentRender(TestCase):
+
+    def setUp(self):
+        self.template_path=os.path.realpath( os.path.join(os.path.dirname(__file__),'templates'))
+        self.content_path= os.path.realpath(os.path.join(os.path.dirname(__file__),'content'))
+
 
     def test_get_meta(self):
         collected = collect_items(self.content_path)
@@ -69,6 +81,8 @@ class TestContentRender(TestCase):
 
     def test_render_content(self):
         render_content(self.content_path, self.template_path)
+
+
 
 if __name__ == '__main__':
     main()
