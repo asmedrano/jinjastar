@@ -7,14 +7,28 @@
 	<link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
-	{% for l in '.'| get_files_list('.html') %}
-	<a href="/{{l}}">{{l}}</a> {{self}}
+	<h1> This site was rendered with jinjastar</h1>
+	<nav>
+	<ul>
+	{% for l in '.'| get_files_list('.html', exclude='articles') %}
+	<li><a href="/{{l.link}}">{{l.name}}</a></li>
 	{%endfor%}
+	</ul>
+	<small>{{'This text'|say_word}}</small>
+	</nav>
 	<header>
 	{% block content %}
 	base!
 	{%endblock%}
 	</header>
+	<aside>	
+		<h4> Here is an example of grabbing a specific directory of content</h4>
+		<ul>
+		{% for l in '/articles'| get_files_list('.html')%}
+		<li><a href="/{{l.link}}">{{l.name}}</a></li>
+		{%endfor%}
+		</ul>
+	</aside>
 	<footer>
         
     </footer>

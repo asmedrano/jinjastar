@@ -1,7 +1,7 @@
 from jinja2 import Environment, FileSystemLoader, Markup
 import os, shutil
 import markdown
-import logging
+import logging, sys
 from utils import *
 from content import *
 
@@ -13,10 +13,11 @@ lfh.setFormatter(formatter)
 logger.addHandler(lfh)
 
 
-def render(template_path, render_input_path, output_path='/tmp/rendered_templates'):
+def render(template_path, render_input_path, output_path='/tmp/rendered_templates', filters=None):
     """ template path: is the path for jijna to load templates from
         render_input_path: the path to the templates to be rendered, this could be the same path as templates
         output_path: the path to render the output to
+        filters: path to filters.py file
     """
     # clean up template paths a bit
     template_path = os.path.realpath(template_path)
@@ -32,6 +33,20 @@ def render(template_path, render_input_path, output_path='/tmp/rendered_template
     env = Environment(loader=loader)
     env.filters['markdown'] = safe_markdown
     env.filters['get_files_list'] = get_files_list
+    if filters:
+        # we need to load any user added filters
+        # load the filters file
+        f = load_module(filters)
+        # now add them to the env filters, stop exectuion we cant find the
+        # filters.
+
+        if hasattr(f, 'TEMPLATE_FILTERS'):
+            for key, value in f.TEMPLATE_FILTERS.iteritems():
+                env.filters[key] = value
+        else:
+            logger.error('Could not find "TEMPLATE_FILTERS" in %s' % filters)
+            sys.exit()
+
     env.globals['template_path'] = template_path
     env.globals['render_input_path'] = render_input_path
     env.globals['output_path'] = output_path
@@ -62,12 +77,12 @@ def basic_render(env, template_path, render_input_path, output_path):
     # copy static files over
     copy_static_files(output_path, template_path)
 
-def render_content(path_to_content, template_path, output_path='/tmp/render_content'):
+def render_content(path_to_content, template_path, output_path='/tmp/render_content', filters=None):
     """ This render takes a content directory, generates templates out of it then renders it"""
     #generate the templates from content
     generate_items(path_to_content)
     # this should generate templates to /tmp/jstar_temp
-    render(template_path, os.path.realpath('/tmp/jstar_temp'), output_path)
+    render(template_path, os.path.realpath('/tmp/jstar_temp'), output_path, filters=filters)
 
 
 def write_to_file(target, content):

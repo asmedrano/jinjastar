@@ -1,7 +1,7 @@
 import os, shutil
 import imp
 
-def collect_items(path_to_content,valid_file_ext=['.md'], ignore_dirs=[]):
+def collect_items(path_to_content, valid_file_ext=['.md'], ignore_dirs=[]):
     """ Retrieve all the items in target from content directory
         exclude files with file extenisons listed in valid_file_ext
         ingore_dirs : list of directories to ingore
@@ -10,7 +10,6 @@ def collect_items(path_to_content,valid_file_ext=['.md'], ignore_dirs=[]):
     items = []
 
     for root, dirs, files in os.walk(path):
-
         for file in files:
             filename, fileext = os.path.splitext(file)
             if fileext in valid_file_ext:

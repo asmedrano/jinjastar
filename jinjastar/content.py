@@ -62,10 +62,22 @@ def content_block(content):
 
 # custom jinja2 filters
 @evalcontextfilter
-def get_files_list(context, target_dir, file_ext, recursive=True):
+def get_files_list(context, target_dir='.', file_ext='*', exclude=''):
     """ Returns an iterable of files.
         target_dir is relative to the render_input_path
     """
+    target_dir = target_dir.strip('/')
     path = os.path.join(context.environment.globals['render_input_path'], target_dir)
-    files = collect_items(path, [file_ext])
-    return [f['cleaned_path'] for f in files]
+
+    exclude_dirs = exclude.split(',')
+
+    if file_ext == '*':
+        valid_file_ext = ['.html','.htm','.css','.js','.png','.jpg','.gif']
+    else:
+        valid_file_ext = file_ext.split(',')
+
+    files = collect_items(path, valid_file_ext, exclude_dirs)
+    if target_dir != '.':
+        return [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file']} for f in files]
+    else:
+        return [{'link':f['cleaned_path'], 'name':f['file'] } for f in files]
