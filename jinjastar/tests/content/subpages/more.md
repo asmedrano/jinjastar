@@ -1,4 +1,4 @@
-title:Home Page
+title:More Page!
 template:base.html
 content:
 # Hello World!

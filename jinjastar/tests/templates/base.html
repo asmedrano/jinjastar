@@ -11,7 +11,7 @@
 	<nav>
 	<ul>
 	{% for l in '.'| get_files_list('.html', exclude='articles') %}
-	<li><a href="/{{l.link}}">{{l.name}}</a></li>
+	<li><a href="/{{l.link}}">{{l.title}}</a></li>
 	{%endfor%}
 	</ul>
 	<small>{{'This text'|say_word}}</small>
@@ -25,7 +25,7 @@
 		<h4> Here is an example of grabbing a specific directory of content</h4>
 		<ul>
 		{% for l in '/articles'| get_files_list('.html')%}
-		<li><a href="/{{l.link}}">{{l.name}}</a></li>
+		<li><a href="/{{l.link}}">{{l.title}}</a></li>
 		{%endfor%}
 		</ul>
 	</aside>

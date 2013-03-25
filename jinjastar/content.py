@@ -49,8 +49,8 @@ def generate_items(path_to_content):
 
 def head_from_meta(meta):
     """ write a jinja2 extends block from the meta which looks like this {'template': 'base.html', 'title': 'Home Page'}"""
-
-    out = '{{%extends "{0}"%}}'.format(meta['template'])
+    out = '{{# TITLE:{0} #}}'.format(meta['title']) # we write the title or any other meta data into the head so we can acess it later
+    out += '\n{{%extends "{0}"%}}'.format(meta['template'])
     out += '\n{{%block title%}}{0}{{%endblock%}}'.format(meta['title'])
     return out
 
@@ -58,6 +58,17 @@ def content_block(content):
     """ Create a jinja2 content block"""
     out = '''\n{{% block content %}}\n{{%filter markdown%}}\n{0}\n{{%endfilter%}}\n{{%endblock%}}'''.format(content)
     return out
+
+
+def get_value_from_file(file, key):
+    regex = re.compile("%s:[a-zA-Z0-9\s\,\!\?\*\%%\-\.]+" % key)
+    value = None
+    with open (file, 'r') as f:
+        line = f.readlines()[0]
+        m = regex.findall(line)
+        if m:
+            value = m[0].split(":")[1]
+    return value
 
 
 # custom jinja2 filters
@@ -77,7 +88,8 @@ def get_files_list(context, target_dir='.', file_ext='*', exclude=''):
         valid_file_ext = file_ext.split(',')
 
     files = collect_items(path, valid_file_ext, exclude_dirs)
+
     if target_dir != '.':
-        return [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file']} for f in files]
+        return [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file'], 'title':get_value_from_file(f['realpath'], 'TITLE')} for f in files]
     else:
-        return [{'link':f['cleaned_path'], 'name':f['file'] } for f in files]
+        return [{'link':f['cleaned_path'], 'name':f['file'],'title':get_value_from_file(f['realpath'], 'TITLE') } for f in files]
