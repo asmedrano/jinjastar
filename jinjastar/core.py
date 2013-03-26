@@ -33,7 +33,7 @@ def render(template_path, render_input_path, output_path='/tmp/rendered_template
     env = Environment(loader=loader)
     env.filters['markdown'] = safe_markdown
     env.filters['get_files_list'] = get_files_list
-    if filters:
+    if filters is not None:
         # we need to load any user added filters
         # load the filters file
         f = load_module(filters)
