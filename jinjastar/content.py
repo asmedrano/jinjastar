@@ -44,6 +44,8 @@ def generate_items(path_to_content):
             os.makedirs(os.path.dirname(fdir))
         if meta is not None:
             with open(fdir, 'w') as f:
+                # write last modified time
+                f.write('{{# LMT:{0} #}}'.format(get_last_modified_time(item['realpath'])))
                 f.write(head_from_meta(meta))
                 f.write(content_block(get_item_content(rp)))
 
@@ -73,7 +75,7 @@ def get_value_from_file(file, key):
 
 # custom jinja2 filters
 @evalcontextfilter
-def get_files_list(context, target_dir='.', file_ext='*', exclude=''):
+def get_files_list(context, target_dir='.', file_ext='*', exclude='', sort='name', reverse=False):
     """ Returns an iterable of files.
         target_dir is relative to the render_input_path
     """
@@ -81,6 +83,7 @@ def get_files_list(context, target_dir='.', file_ext='*', exclude=''):
     path = os.path.join(context.environment.globals['render_input_path'], target_dir)
 
     exclude_dirs = exclude.split(',')
+
 
     if file_ext == '*':
         valid_file_ext = ['.html','.htm','.css','.js','.png','.jpg','.gif']
@@ -90,6 +93,20 @@ def get_files_list(context, target_dir='.', file_ext='*', exclude=''):
     files = collect_items(path, valid_file_ext, exclude_dirs)
 
     if target_dir != '.':
-        return [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file'], 'title':get_value_from_file(f['realpath'], 'TITLE')} for f in files]
+        file_list =  [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file'],
+                 'title':get_value_from_file(f['realpath'], 'TITLE'),
+                 'lmt':get_value_from_file(f['realpath'], 'LMT')} for f in files]
     else:
-        return [{'link':f['cleaned_path'], 'name':f['file'],'title':get_value_from_file(f['realpath'], 'TITLE') } for f in files]
+        file_list = [{'link':f['cleaned_path'], 'name':f['file'],
+                 'title':get_value_from_file(f['realpath'], 'TITLE'),
+                 'lmt':get_value_from_file(f['realpath'], 'LMT')} for f in files]
+
+    if sort == 'name':
+        sorted_file_list = sorted(file_list, key=lambda k: k['name'], reverse=reverse)
+    elif sort =='date':
+        sorted_file_list = sorted(file_list, key=lambda k: k['lmt'], reverse=reverse)
+    else:
+        sorted_file_list = files
+
+
+    return sorted_file_list

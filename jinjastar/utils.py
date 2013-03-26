@@ -1,5 +1,6 @@
 import os, shutil
 import imp
+import datetime
 
 def collect_items(path_to_content, valid_file_ext=['.md'], ignore_dirs=[]):
     """ Retrieve all the items in target from content directory
@@ -42,3 +43,7 @@ def load_module(path_to_module):
     except ImportError:
         print "Could not find %s" % path_to_module
         return None
+
+def get_last_modified_time(file_path):
+    statbuf = os.stat(file_path)
+    return datetime.datetime.fromtimestamp(statbuf.st_mtime).strftime('%m-%d-%Y')

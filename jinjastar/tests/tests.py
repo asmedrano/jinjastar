@@ -39,6 +39,11 @@ class TestUtils(TestCase):
         module = load_module(os.path.join(os.path.dirname(__file__), 'filters.py'))
         self.assertTrue(hasattr(module, 'TEMPLATE_FILTERS'))
 
+    def test_get_lmt(self):
+        lmt = get_last_modified_time(self.content_path + "/"+'index.md')
+        self.assertTrue(type(lmt), datetime.datetime)
+
+
 class TestRender(TestCase):
     """ Tests the most basic functionalilty of the tool"""
 

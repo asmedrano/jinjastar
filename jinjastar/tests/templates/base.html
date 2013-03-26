@@ -24,8 +24,8 @@
 	<aside>	
 		<h4> Here is an example of grabbing a specific directory of content</h4>
 		<ul>
-		{% for l in '/articles'| get_files_list('.html')%}
-		<li><a href="/{{l.link}}">{{l.title}}</a></li>
+		{% for l in '/articles'| get_files_list('.html', sort='date', reverse=True)%}
+		<li><a href="/{{l.link}}">{{l.title}}</a><small>{{l.lmt}}</small></li>
 		{%endfor%}
 		</ul>
 	</aside>
