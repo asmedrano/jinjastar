@@ -2,6 +2,7 @@ import os
 import re
 from utils import *
 from jinja2 import evalcontextfilter
+import codecs
 
 def get_content_item_meta(path):
     """ The first N lines of a content file contain the meta data for this item. Return the metatdata for given item"""
@@ -19,10 +20,10 @@ def get_content_item_meta(path):
 
 def get_item_content(path):
     """ Get the content from item in path"""
-    with open(path, 'r') as f:
+    with codecs.open(path, mode='r', encoding='utf-8') as f:
         content = f.read()
     # we need to replace the first 2 lines
-    return re.sub(r'title:.*\ntemplate.*\ncontent:', '', content)
+    return re.sub(r'title:.*\ntemplate.*\ncontent:', u'', content)
 
 def generate_items(path_to_content):
     """generate jinja templates from the content pages
@@ -43,9 +44,9 @@ def generate_items(path_to_content):
         if not os.path.exists(os.path.dirname(fdir)):
             os.makedirs(os.path.dirname(fdir))
         if meta is not None:
-            with open(fdir, 'w') as f:
+            with codecs.open(fdir, mode='w', encoding='utf-8') as f:
                 # write last modified time
-                f.write('{{# LMT:{0} #}}'.format(get_last_modified_time(item['realpath'])))
+                f.write(u'{{# LMT:{0} #}}'.format(get_last_modified_time(item['realpath'])))
                 f.write(head_from_meta(meta))
                 f.write(content_block(get_item_content(rp)))
 
@@ -58,7 +59,7 @@ def head_from_meta(meta):
 
 def content_block(content):
     """ Create a jinja2 content block"""
-    out = '''\n{{% block content %}}\n{{%filter markdown%}}\n{0}\n{{%endfilter%}}\n{{%endblock%}}'''.format(content)
+    out = u'''\n{{% block content %}}\n{{%filter markdown%}}{{%raw%}}\n{0}\n{{%endraw%}}{{%endfilter%}}\n{{%endblock%}}'''.format(content)
     return out
 
 

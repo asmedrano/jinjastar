@@ -4,6 +4,7 @@ import markdown
 import logging, sys
 from utils import *
 from content import *
+import codecs
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -86,9 +87,9 @@ def render_content(path_to_content, template_path, output_path='/tmp/render_cont
 
 
 def write_to_file(target, content):
-    f = open(target, 'w')
+    f = codecs.open(target, mode='w', encoding='utf-8')
     f.write(content)
     f.close()
 
 def safe_markdown(text):
-    return Markup(markdown.markdown(text))
+    return Markup(markdown.markdown(text, extensions=['nl2br']))

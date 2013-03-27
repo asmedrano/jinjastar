@@ -13,24 +13,85 @@
 
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/main.css">
-        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
 	    <![endif]-->
-	<div class="nav">
-		
-			<li><a href="/index.html">Introduction </a></li>
-		
-	</div>
-	<div class="content">
-		
-<h1>Hello World!</h1>
-<p>This is a bunch of text that i have written
-this is more text writen in markdown</p>
+	<div id="wrapper">
+		<div class="nav">
+			<ul>
+			
+				<li><a href="/content.html">Content Rendering </a></li>
+			
+				<li><a href="/filters.html">Using filters </a></li>
+			
+				<li><a href="/index.html">Introduction </a></li>
+			
+			</ul>
+		</div>
+		<div class="content">
+			
+<h1>What is it?</h1>
+<p><code>jinjastar</code> is a command line interface to <a href="http://jinja.pocoo.org/">jinja2</a>. It attempts to simplify the process if developing static websites by allowing you to use a templating language (in this case <code>jinja2</code>) in your project. There are 2 main features of <code>jinjastar</code>; "basic" rendering and "content" rendering.</p>
+<h2>Using Basic Rendering</h2>
+<p>Say you have a project that looks like this:</p>
+<pre><code>├── index.html
+├── about_us.html 
+├── css
+│   ├── grid.css 
+│   ├── main.css  
+│   └── normalize.css 
+├── js
+│   ├── main.js
+│   ├── plugins.js
+│   └── vendor
+│       ├── jquery-1.9.1.min.js
+│       └── modernizr-2.6.2.min.js 
+└── morepages
+├── subpage.html
+</code></pre>
+<p>Your <code>index.html</code> file might look like this</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+        &lt;link rel="stylesheet" href="css/normalize.css"&gt;
+        &lt;link rel="stylesheet" href="css/main.css"&gt;
+    &lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        {% block content %}
+        &lt;h1&gt; This is our homepage &lt;/h1&gt;
+        {%endblock%}
+    &lt;/header&gt;
+    &lt;footer&gt;
+        blah blah blah
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>Now every other page you build for your site can <code>extend</code> this page. <br />
+Lets say we add a page to our site called <code>about.html</code></p>
+<p>It would like like this</p>
+<pre><code>{%extends "index.html"%}
+{% block content %}
+    &lt;h1&gt; About us&lt;/h1&gt;
+    &lt;p&gt; Tra la lalalal &lt;/p&gt;
+{%endblock%}
+</code></pre>
+<p>Because we have defined a <code>block</code> called <code>content</code>, we can easily replace the content of this page without having to worry about the rest of it.</p>
+<h2>Rendering the output.</h2>
+<p>Now we can render our templates into html files. By default, <code>jinjastar</code> will copy over all your static files from the templates directory.</p>
+<p>We call the utility like so.<br />
+<code>$ python jstar.py -t path/to/your/project -o /path/to/output/to</code></p>
+<p>The <code>-t</code> file is the path to the directory containing templates you want to render. The <code>-o</code> flag is the path to the directory you want the output to end up in.</p>
+<p>This is essentially the core logic of <code>jinjastar</code>. Now lets look at using the <a href="/content.html">"content" rendering feature.</a></p>
+
+		</div>
 
 	</div>
 

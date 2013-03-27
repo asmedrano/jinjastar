@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/main.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+	    <![endif]-->
+	<div id="wrapper">
+		<div class="nav">
+			<ul>
+			
+				<li><a href="/content.html">Content Rendering </a></li>
+			
+				<li><a href="/filters.html">Using filters </a></li>
+			
+				<li><a href="/index.html">Introduction </a></li>
+			
+			</ul>
+		</div>
+		<div class="content">
+			
+<h2>Using Filters</h2>
+<p><code>filters</code> are functions you can call from your templates at render time. For Example</p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;&lt;/title&gt;
+        &lt;meta charset="utf-8" /&gt;
+        &lt;link rel="stylesheet" href="css/normalize.css"&gt;
+        &lt;link rel="stylesheet" href="css/main.css"&gt;
+    &lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;!-- this is the filter--&gt;
+        &lt;h1&gt;{{ "Hello World"|replace("Hello", "Goodbye") }}&lt;/h1&gt;
+
+        &lt;!-- here is another one called 'list'. It can turn a comma delimted string into an iterable list--&gt;
+
+        {%for i in 'bob,stan,doug,danny,stacy'|list %}
+            {{i}}
+        {%endfor%}
+
+    &lt;/header&gt;
+    &lt;footer&gt;
+        blah blah blah
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>In this example the filter <code>replace</code> took the word on the leftside of the pipe and replaced "Hello" with "Goodbye". The result would be that "Goodbye World" would be rendered into our template. There a number of filters built into <code>jinja2</code> that you can use in your templates. Take a look <a href="http://jinja.pocoo.org/docs/templates/#builtin-filters">here</a>. Not all may be relevant to us right off.</p>
+<h2>Jinjastar filters</h2>
+<p><code>jinjastar</code> comes with some of its own filters. The first one I'd like to point out is <code>get_files_list</code>. Here is an example:</p>
+<pre><code>&lt;div class="nav"&gt;
+    &lt;ul&gt;
+    {% for l in '.' |get_files_list('.html') %}
+        &lt;li&gt;&lt;a href="/{{l.link}}"&gt;{{l.title}}&lt;/a&gt;&lt;/li&gt;
+    {%endfor%}
+    &lt;/ul&gt;
+&lt;/div&gt;
+</code></pre>
+<p><code>get_files_list</code> takes the path to a directory and returns a list of files that you can iterate over. In the example above we are tell it to get files from <code>'.'</code>, which means the root of the content directory to <code>jinjastar</code>. We also tell it to get only <code>'.html'</code> files in those directories. That lets us create links for each content page we create. Here is what the bare output looks like:</p>
+<pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering '}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters '}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction '}]
+</code></pre>
+<p><code>get_files_list</code> returns a list of dictionaries that contain meta data about each file. The fields are <br />
+<em><code>lmt</code> Last modified time<br />
+</em><code>link</code> a link to the file from the root of the content directory<br />
+<em><code>name</code> the name of the actual file.<br />
+</em> <code>title</code> The title field from the markdown page. </p>
+<p><code>get_files_list</code> also takes a number of other parameters. Ex:</p>
+<pre><code>get_files_list(file_ext='.js, .css', exclude='articles,archive', sort='name', reverse=False)
+</code></pre>
+<p><code>file_ext</code> can be any comma delimted string of file extensions. The default is * which means all files.<br />
+<code>exclude</code> tells the get_files_list to stay out of these directories<br />
+<code>sort</code> tells get_files_list how to sort the files. Choices are <code>name</code> or <code>date</code><br />
+<code>reverse</code> reverse the sort order. Ex: If you sort by date, you may want to use <code>reverse=True</code> so you would get the most recently created content first.</p>
+
+		</div>
+
+	</div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+        <script>
+            var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
