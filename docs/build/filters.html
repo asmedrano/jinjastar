@@ -24,7 +24,7 @@
 		<div class="nav">
 			<ul>
 			
-				<li><a href="/content.html">Content Rendering </a></li>
+				<li><a href="/content.html">Content Rlendering </a></li>
 			
 				<li><a href="/filters.html">Using filters </a></li>
 			
@@ -62,9 +62,9 @@
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>In this example the filter <code>replace</code> took the word on the leftside of the pipe and replaced "Hello" with "Goodbye". The result would be that "Goodbye World" would be rendered into our template. There a number of filters built into <code>jinja2</code> that you can use in your templates. Take a look <a href="http://jinja.pocoo.org/docs/templates/#builtin-filters">here</a>. Not all may be relevant to us right off.</p>
+<p>In this example the filter <code>replace</code> took the word on the left side of the pipe and replaced "Hello" with "Goodbye". The result would be that "Goodbye World" would be rendered into our template. The second filter in the example is <code>list</code>. The <code>list</code> filter turns a comma delimited string into an iterable list. We can then iterate over it with another filter that works like a traditional <code>for</code> loop. There are a number of other filters built into <code>jinja2</code> that you can use in your templates. You can find a complete list <a href="http://jinja.pocoo.org/docs/templates/#builtin-filters">here</a>. Not all may be relevant to us right off.</p>
 <h2>Jinjastar filters</h2>
-<p><code>jinjastar</code> comes with some of its own filters. The first one I'd like to point out is <code>get_files_list</code>. Here is an example:</p>
+<p><code>jinjastar</code> comes with some of its own filters. The first one I'd like to point out is <code>get_files_list</code>. In the example below, we use it to generate a link to every .html page in our website.</p>
 <pre><code>&lt;div class="nav"&gt;
     &lt;ul&gt;
     {% for l in '.' |get_files_list('.html') %}
@@ -73,21 +73,36 @@
     &lt;/ul&gt;
 &lt;/div&gt;
 </code></pre>
-<p><code>get_files_list</code> takes the path to a directory and returns a list of files that you can iterate over. In the example above we are tell it to get files from <code>'.'</code>, which means the root of the content directory to <code>jinjastar</code>. We also tell it to get only <code>'.html'</code> files in those directories. That lets us create links for each content page we create. Here is what the bare output looks like:</p>
-<pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering '}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters '}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction '}]
-</code></pre>
-<p><code>get_files_list</code> returns a list of dictionaries that contain meta data about each file. The fields are <br />
+<p>The first argument <code>get_files_list</code> accepts is the path to a directory.<br />
+It then recursively finds files and returns a list we can iterate over. In the example above we tell it to get files starting in the directory <code>'.'</code>, which means the root of the content directory. We also tell it to return only <code>'.html'</code> files.</p>
+<p><code>get_files_list</code> returns a list of dictionaries that contain meta data about each file. The fields are:<br />
 <em><code>lmt</code> Last modified time<br />
 </em><code>link</code> a link to the file from the root of the content directory<br />
 <em><code>name</code> the name of the actual file.<br />
 </em> <code>title</code> The title field from the markdown page. </p>
+<p>Here is an sample of what it actually produces</p>
+<pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering '}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters '}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction '}]
+</code></pre>
 <p><code>get_files_list</code> also takes a number of other parameters. Ex:</p>
 <pre><code>get_files_list(file_ext='.js, .css', exclude='articles,archive', sort='name', reverse=False)
 </code></pre>
 <p><code>file_ext</code> can be any comma delimted string of file extensions. The default is * which means all files.<br />
-<code>exclude</code> tells the get_files_list to stay out of these directories<br />
+<code>exclude</code> tells get_files_list to stay out of these directories<br />
 <code>sort</code> tells get_files_list how to sort the files. Choices are <code>name</code> or <code>date</code><br />
 <code>reverse</code> reverse the sort order. Ex: If you sort by date, you may want to use <code>reverse=True</code> so you would get the most recently created content first.</p>
+<h2>Using your own filters</h2>
+<p>Filters are simply python functions. You can include your own custom filters in your project by passing in a path to a <code>.py</code> file containing your custom code.<br />
+Example:<br />
+<code>filter.py</code></p>
+<pre><code>def say_word(word):
+    return '%s was generated by a custom filter !' % word
+
+# NOTE: You must have a TEMPLATE_FILTERS dict in you filter.py file
+TEMPLATE_FILTERS = {
+    'say_word':say_word,
+}
+</code></pre>
+<p>We then need to tell <code>jinjastar</code> about it with the <code>-f</code> flag like so </p>
 
 		</div>
 

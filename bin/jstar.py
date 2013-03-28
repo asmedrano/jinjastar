@@ -25,9 +25,9 @@ jstar.py -c jinjastar/tests/content -t jinjastar/tests/templates -o /tmp/jstar_o
 
 parser = argparse.ArgumentParser(description=description)
 parser.add_argument('-c', action='store', dest='content_dir', type=str, help='Path to the content directory', default=None)
-#parser.add_argument('-i', action="store", dest="input_dir", type=str,  help='Path to the input directory')
 parser.add_argument('-t', action="store", dest="template_dir", type=str,  help='Path to the template directory', required=True)
 parser.add_argument('-o', action="store", dest="out_dir", type=str,  help='Path to output directory', default='/tmp/rendered_templates')
+parser.add_argument('-f', action="store", dest="filter", type=str,  help='Path to filter.py', default=None)
 
 
 def run():
@@ -35,9 +35,14 @@ def run():
     if args.content_dir is None:
     # simplest case only -t flag
     # This means, render this directory of templates, to the -o directory
-        render(args.template_dir, args.template_dir, args.out_dir)
+        render(template_path=args.template_dir,
+               render_input_path=args.template_dir,
+               output_path=args.out_dir, filters=args.filter)
     else:
-        render_content(args.content_dir, args.template_dir, args.out_dir)
+        render_content(path_to_content=args.content_dir,
+                       template_path=args.template_dir,
+                       output_path=args.out_dir,
+                       filters=args.filter)
 
 if __name__ == '__main__':
     run()

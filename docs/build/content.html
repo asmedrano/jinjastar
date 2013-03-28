@@ -24,7 +24,7 @@
 		<div class="nav">
 			<ul>
 			
-				<li><a href="/content.html">Content Rendering </a></li>
+				<li><a href="/content.html">Content Rlendering </a></li>
 			
 				<li><a href="/filters.html">Using filters </a></li>
 			
@@ -36,7 +36,11 @@
 			
 <h2>What is content rendering?</h2>
 <p>Content rending is a feature that lets you render a directory of files written in <a href="http://daringfireball.net/projects/markdown/">markdown syntax</a> against a directory of templates.</p>
-<h3>Directory layout</h3>
+<h2>Rendering</h2>
+<p>In order to render content, we need add the <code>-c</code>:<br />
+<code>jstar.py -c /path/to/content -t /path/to/templates -o /path/to/output</code></p>
+<p><code>jinjastar</code> will then recursively render all markdown files in the specified directory.</p>
+<h3>Sample Directory layout</h3>
 <pre><code>├── content
 │   ├── articles
 │   │   ├── article1.md
@@ -59,7 +63,7 @@
 │   └── subtemplates
 │       ├── article.html
 </code></pre>
-<p>There are 2 important directories here. 1 of them is the <code>content</code> directory and the other is the <code>templates</code> directory. They can live any where on the filesystem as long as eventually we point <code>jinjastar</code> at it. In this example I've placed them in them same directory.</p>
+<p>There are 2 important directories here. The first is the <code>content</code> directory and the other is the <code>templates</code> directory. They can live any where on the filesystem as long as we tell <code>jinjastar</code> where they are. In this example I've placed them in them same directory.</p>
 <h3>Example Markdown file</h3>
 <p>Each Markdown file has a special format <code>jinjastar</code> needs to know how to render the file. Here is an example</p>
 <pre><code>title:Home Page

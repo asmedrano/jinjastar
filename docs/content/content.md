@@ -1,10 +1,17 @@
-title:Content Rendering
+title:Content Rlendering
 template:base.html
 content:
+
 ## What is content rendering?
 Content rending is a feature that lets you render a directory of files written in [markdown syntax](http://daringfireball.net/projects/markdown/) against a directory of templates.
 
-### Directory layout
+## Rendering
+In order to render content, we need add the `-c`:
+`jstar.py -c /path/to/content -t /path/to/templates -o /path/to/output`
+
+`jinjastar` will then recursively render all markdown files in the specified directory.
+
+### Sample Directory layout
 
 	├── content
 	│   ├── articles
@@ -28,7 +35,8 @@ Content rending is a feature that lets you render a directory of files written i
 	│   └── subtemplates
 	│       ├── article.html
 
-There are 2 important directories here. 1 of them is the `content` directory and the other is the `templates` directory. They can live any where on the filesystem as long as eventually we point `jinjastar` at it. In this example I've placed them in them same directory.
+There are 2 important directories here. The first is the `content` directory and the other is the `templates` directory. They can live any where on the filesystem as long as we tell `jinjastar` where they are. In this example I've placed them in them same directory.
+
 
 ### Example Markdown file
 Each Markdown file has a special format `jinjastar` needs to know how to render the file. Here is an example
