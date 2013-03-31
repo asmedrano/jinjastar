@@ -48,10 +48,10 @@ Your `index.html` file might look like this
 	</html>
 
 
-Now every other page you build for your site can `extend` this page. 
+Now every other page you build for your site can simply `extend` this page. 
 Lets say we add a page to our site called `about.html`
 
-It would like like this
+It would look like this
 
 
 	{%extends "index.html"%}

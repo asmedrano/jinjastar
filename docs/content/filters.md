@@ -49,11 +49,12 @@ The first argument `get_files_list` accepts is the path to a directory.
 It then recursively finds files and returns a list we can iterate over. In the example above we tell it to get files starting in the directory `'.'`, which means the root of the content directory. We also tell it to return only `'.html'` files.
 
 `get_files_list` returns a list of dictionaries that contain meta data about each file. The fields are:
-*`lmt` Last modified time
-*`link` a link to the file from the root of the content directory
-*`name` the name of the actual file.
-*`title` The title field from the markdown page. 
-*`order` The order field from the markdow page
+* `lmt` Last modified time
+* `link` a link to the file from the root of the content directory
+* `name` the name of the actual file.
+* `title` The title field from the markdown page. 
+`order` The order field from the markdown page
+
 Here is an sample of what it actually produces
 	
 	[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering', 'order':1}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters', 'order':2}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction', 'order':3}]
@@ -81,4 +82,4 @@ Example:
 		'say_word':say_word,
 	}
 
-We then need to tell `jinjastar` about it with the `-f` flag like so 
+We then need to tell `jinjastar` about it by passing the path to your `.py` file using the `-f` flag.

@@ -76,12 +76,12 @@
 <p>The first argument <code>get_files_list</code> accepts is the path to a directory.<br />
 It then recursively finds files and returns a list we can iterate over. In the example above we tell it to get files starting in the directory <code>'.'</code>, which means the root of the content directory. We also tell it to return only <code>'.html'</code> files.</p>
 <p><code>get_files_list</code> returns a list of dictionaries that contain meta data about each file. The fields are:<br />
-<em><code>lmt</code> Last modified time<br />
-</em><code>link</code> a link to the file from the root of the content directory<br />
-<em><code>name</code> the name of the actual file.<br />
-</em><code>title</code> The title field from the markdown page. <br />
-*<code>order</code> The order field from the markdow page<br />
-Here is an sample of what it actually produces</p>
+<em> <code>lmt</code> Last modified time<br />
+</em> <code>link</code> a link to the file from the root of the content directory<br />
+<em> <code>name</code> the name of the actual file.<br />
+</em> <code>title</code> The title field from the markdown page. <br />
+<code>order</code> The order field from the markdown page</p>
+<p>Here is an sample of what it actually produces</p>
 <pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering', 'order':1}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters', 'order':2}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction', 'order':3}]
 </code></pre>
 <p><code>get_files_list</code> also takes a number of other parameters. Ex:</p>

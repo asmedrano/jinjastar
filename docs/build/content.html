@@ -37,7 +37,7 @@
 <h2>What is content rendering?</h2>
 <p>Content rending is a feature that lets you render a directory of files written in <a href="http://daringfireball.net/projects/markdown/">markdown syntax</a> against a directory of templates.</p>
 <h2>Rendering</h2>
-<p>In order to render content, we need add the <code>-c</code>:<br />
+<p>In order to render content, we need add the <code>-c</code> fla:<br />
 <code>jstar.py -c /path/to/content -t /path/to/templates -o /path/to/output</code></p>
 <p><code>jinjastar</code> will then recursively render all markdown files in the specified directory.</p>
 <h3>Sample Directory layout</h3>
@@ -64,19 +64,21 @@
 │       ├── article.html
 </code></pre>
 <p>There are 2 important directories here. The first is the <code>content</code> directory and the other is the <code>templates</code> directory. They can live any where on the filesystem as long as we tell <code>jinjastar</code> where they are. In this example I've placed them in them same directory.</p>
-<h3>Example Markdown file</h3>
-<p>Each Markdown file has a special format <code>jinjastar</code> needs to know how to render the file. Here is an example</p>
+<h3>Creating Content in Markdown</h3>
+<p>As mentioned previously content files are written in <code>markdown</code>. <code>jinjastar</code> renders an <code>.html</code> file for each <code>.md</code> file in your content directory. For example, if you create a file called <code>index.md</code> in your content directory, <code>jinjastar</code> will render a file called <code>index.html</code>.</p>
+<p>Each Markdown file has a special format <code>jinjastar</code> needs. Here is an example:</p>
 <pre><code>title:Home Page
 template:base.html
+order:1
 content:
 # Hello World!
-This is a bunch of text that i have written
-this is more text writen in markdown
+This is markdown content!
 </code></pre>
-<p>Each markdown file you produce must have the 3 fields: <code>title, template, and content</code></p>
+<p>Each markdown file you create must have the 3 fields: <code>title, template, and content</code>. The <code>order</code> field is optional.</p>
 <p>The <code>title</code> field becomes usefull when you want to render a link to a page like the title of a blog post vs <code>article1.html</code> or something like that. If you look to the bottom of this page, you will see that the links generated below all have a custom title but have all been generated from markdown files like the example above.</p>
 <p>The <code>template</code> field is what template from your templates directory you want to use to render this page. In the example, its <code>base.html</code>. If you wanted to use another template, say one located at <code>subtemplates/article.html</code> you simply use that instead of <code>base.html</code>. Keep in mind <code>article.html</code> can still <code>extend</code> from <code>base.html</code>. </p>
-<p>The <code>content</code> field where your markdown formated content goes.</p>
+<p>The <code>content</code> field is where your markdown formated content goes.</p>
+<p>The <code>order</code> field is a number that lets you explicitly tell <code>jinjastar</code> how to order the content.</p>
 <h4>Sidenote on content templates</h4>
 <p>Content templates follow the exact same pattern as any other template, the only real difference for now is that in order to have the content rendered into yourpage, you must have a <code>{% block content %}</code> block in you template.</p>
 <h3>Nested Content</h3>

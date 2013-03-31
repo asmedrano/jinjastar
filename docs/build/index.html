@@ -34,10 +34,6 @@
 		</div>
 		<div class="content">
 			
-<p>title:Introduction<br />
-template:base.html<br />
-order:1<br />
-content:</p>
 <h1>What is it?</h1>
 <p><code>jinjastar</code> is a command line interface to <a href="http://jinja.pocoo.org/">jinja2</a>. It attempts to simplify the process if developing static websites by allowing you to use a templating language (in this case <code>jinja2</code>) in your project. There are 2 main features of <code>jinjastar</code>; "basic" rendering and "content" rendering.</p>
 <h2>Using Basic Rendering</h2>
@@ -78,9 +74,9 @@ content:</p>
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
-<p>Now every other page you build for your site can <code>extend</code> this page. <br />
+<p>Now every other page you build for your site can simply <code>extend</code> this page. <br />
 Lets say we add a page to our site called <code>about.html</code></p>
-<p>It would like like this</p>
+<p>It would look like this</p>
 <pre><code>{%extends "index.html"%}
 {% block content %}
     &lt;h1&gt; About us&lt;/h1&gt;

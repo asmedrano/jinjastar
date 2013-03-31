@@ -27,7 +27,7 @@ def get_item_content(path):
     with codecs.open(path, mode='r', encoding='utf-8') as f:
         content = f.read()
     # we need to replace the first 2 lines
-    return re.sub(r'title:.*\ntemplate.*\ncontent:', u'', content)
+    return re.sub(r'title:.*\ntemplate.*(\norder.*)?\ncontent:', u'', content)
 
 def generate_items(path_to_content):
     """generate jinja templates from the content pages
