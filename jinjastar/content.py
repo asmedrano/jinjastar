@@ -12,6 +12,10 @@ def get_content_item_meta(path):
             lines = f.readlines()
             meta['title'] = lines[0].split(':')[1].strip() #TODO sometimes this may be blank need to catch the error
             meta['template'] =  lines[1].split(':')[1].strip()
+            if 'order' in lines[2]:
+                val = lines[2].split(':')[1].strip()
+                meta['order'] = val if val != '' else 0
+
     except IndexError:
         # TODO: User should get notified that this template didnt render
         pass
@@ -53,6 +57,8 @@ def generate_items(path_to_content):
 def head_from_meta(meta):
     """ write a jinja2 extends block from the meta which looks like this {'template': 'base.html', 'title': 'Home Page'}"""
     out = '{{# TITLE:{0} #}}'.format(meta['title']) # we write the title or any other meta data into the head so we can acess it later
+    if 'order' in meta:
+        out += '{{# ORDER:{0} #}}'.format(meta['order'])
     out += '\n{{%extends "{0}"%}}'.format(meta['template'])
     out += '\n{{%block title%}}{0}{{%endblock%}}'.format(meta['title'])
     return out
@@ -79,12 +85,12 @@ def get_value_from_file(file, key):
 def get_files_list(context, target_dir='.', file_ext='*', exclude='', sort='name', reverse=False):
     """ Returns an iterable of files.
         target_dir is relative to the render_input_path
+        valid sort options = name, order, date
     """
     target_dir = target_dir.strip('/')
     path = os.path.join(context.environment.globals['render_input_path'], target_dir)
 
     exclude_dirs = exclude.split(',')
-
 
     if file_ext == '*':
         valid_file_ext = ['.html','.htm','.css','.js','.png','.jpg','.gif']
@@ -96,16 +102,20 @@ def get_files_list(context, target_dir='.', file_ext='*', exclude='', sort='name
     if target_dir != '.':
         file_list =  [{ 'link':target_dir + '/' + f['cleaned_path'], 'name':f['file'],
                  'title':get_value_from_file(f['realpath'], 'TITLE'),
-                 'lmt':get_value_from_file(f['realpath'], 'LMT')} for f in files]
+                 'lmt':get_value_from_file(f['realpath'], 'LMT'),
+                 'order':get_value_from_file(f['realpath'],'ORDER') or len(files) + 1} for f in files]
     else:
         file_list = [{'link':f['cleaned_path'], 'name':f['file'],
                  'title':get_value_from_file(f['realpath'], 'TITLE'),
-                 'lmt':get_value_from_file(f['realpath'], 'LMT')} for f in files]
+                 'lmt':get_value_from_file(f['realpath'], 'LMT'),
+                 'order':get_value_from_file(f['realpath'],'ORDER') or len(files) + 1} for f in files]
 
     if sort == 'name':
         sorted_file_list = sorted(file_list, key=lambda k: k['name'], reverse=reverse)
     elif sort =='date':
         sorted_file_list = sorted(file_list, key=lambda k: k['lmt'], reverse=reverse)
+    elif sort =='order':
+        sorted_file_list = sorted(file_list, key=lambda k: k['order'], reverse=reverse)
     else:
         sorted_file_list = files
 

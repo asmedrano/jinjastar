@@ -52,11 +52,11 @@ It then recursively finds files and returns a list we can iterate over. In the e
 *`lmt` Last modified time
 *`link` a link to the file from the root of the content directory
 *`name` the name of the actual file.
-* `title` The title field from the markdown page. 
-
+*`title` The title field from the markdown page. 
+*`order` The order field from the markdow page
 Here is an sample of what it actually produces
 	
-	[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering '}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters '}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction '}]
+	[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering', 'order':1}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters', 'order':2}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction', 'order':3}]
 
 
 `get_files_list` also takes a number of other parameters. Ex:
@@ -65,7 +65,7 @@ Here is an sample of what it actually produces
 
 `file_ext` can be any comma delimted string of file extensions. The default is * which means all files.
 `exclude` tells get_files_list to stay out of these directories
-`sort` tells get_files_list how to sort the files. Choices are `name` or `date`
+`sort` tells get_files_list how to sort the files. Choices are `name`, `date`, `order`
 `reverse` reverse the sort order. Ex: If you sort by date, you may want to use `reverse=True` so you would get the most recently created content first.
 
 ## Using your own filters

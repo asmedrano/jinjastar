@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -22,14 +23,27 @@
 	<div id="wrapper">
 		<div class="nav">
 			<ul>
-			{% for l in '.' |get_files_list('.html', sort='order', reverse=True) %}
-			<li><a href="/{{l.link}}">{{l.title}}</a></li>
-			{%endfor%}
+			
+				<li><a href="/articles/article1.html">Article 1 </a></li>
+			
+				<li><a href="/articles/article2.html">Article2 </a></li>
+			
+				<li><a href="/content.html">Content Rlendering </a></li>
+			
+				<li><a href="/filters.html">Using filters </a></li>
+			
+				<li><a href="/index.html">Introduction </a></li>
+			
+				<li><a href="/subpages/more.html">More Page! </a></li>
+			
 			</ul>
 		</div>
 		<div class="content">
-			{%block content%}
-			{%endblock%}
+			
+<h1>Hello World!</h1>
+<p>This is a bunch of text that i have written<br />
+this is more text writen in markdown</p>
+
 		</div>
 
 	</div>

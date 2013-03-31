@@ -24,11 +24,11 @@
 		<div class="nav">
 			<ul>
 			
-				<li><a href="/content.html">Content Rlendering </a></li>
+			<li><a href="/index.html">Introduction </a></li>
 			
-				<li><a href="/filters.html">Using filters </a></li>
+			<li><a href="/content.html">Content Rlendering </a></li>
 			
-				<li><a href="/index.html">Introduction </a></li>
+			<li><a href="/filters.html">Using filters </a></li>
 			
 			</ul>
 		</div>
@@ -79,16 +79,17 @@ It then recursively finds files and returns a list we can iterate over. In the e
 <em><code>lmt</code> Last modified time<br />
 </em><code>link</code> a link to the file from the root of the content directory<br />
 <em><code>name</code> the name of the actual file.<br />
-</em> <code>title</code> The title field from the markdown page. </p>
-<p>Here is an sample of what it actually produces</p>
-<pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering '}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters '}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction '}]
+</em><code>title</code> The title field from the markdown page. <br />
+*<code>order</code> The order field from the markdow page<br />
+Here is an sample of what it actually produces</p>
+<pre><code>[{'lmt': '03-26-2013 ', 'link': 'content.html', 'name': 'content.html', 'title': 'Content Rendering', 'order':1}, {'lmt': '03-26-2013 ', 'link': 'filters.html', 'name': 'filters.html', 'title': 'Using filters', 'order':2}, {'lmt': '03-26-2013 ', 'link': 'index.html', 'name': 'index.html', 'title': 'Introduction', 'order':3}]
 </code></pre>
 <p><code>get_files_list</code> also takes a number of other parameters. Ex:</p>
 <pre><code>get_files_list(file_ext='.js, .css', exclude='articles,archive', sort='name', reverse=False)
 </code></pre>
 <p><code>file_ext</code> can be any comma delimted string of file extensions. The default is * which means all files.<br />
 <code>exclude</code> tells get_files_list to stay out of these directories<br />
-<code>sort</code> tells get_files_list how to sort the files. Choices are <code>name</code> or <code>date</code><br />
+<code>sort</code> tells get_files_list how to sort the files. Choices are <code>name</code>, <code>date</code>, <code>order</code><br />
 <code>reverse</code> reverse the sort order. Ex: If you sort by date, you may want to use <code>reverse=True</code> so you would get the most recently created content first.</p>
 <h2>Using your own filters</h2>
 <p>Filters are simply python functions. You can include your own custom filters in your project by passing in a path to a <code>.py</code> file containing your custom code.<br />

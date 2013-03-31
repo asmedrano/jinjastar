@@ -84,6 +84,8 @@ def render_content(path_to_content, template_path, output_path='/tmp/render_cont
     generate_items(path_to_content)
     # this should generate templates to /tmp/jstar_temp
     render(template_path, os.path.realpath('/tmp/jstar_temp'), output_path, filters=filters)
+    # clean up
+    shutil.rmtree('/tmp/jstar_temp')
 
 
 def write_to_file(target, content):
