@@ -23,7 +23,7 @@
 		<div class="nav">
 			<ul>
 			{% for l in '.' |get_files_list('.html', sort='order', reverse=True) %}
-			<li><a href="/{{l.link}}">{{l.title}}</a></li>
+			<li><a href="{{l.link}}">{{l.title}}</a></li>
 			{%endfor%}
 			</ul>
 		</div>
