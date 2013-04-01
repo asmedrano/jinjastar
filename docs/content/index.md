@@ -71,4 +71,4 @@ We call the utility like so.
 
 The `-t` file is the path to the directory containing templates you want to render. The `-o` flag is the path to the directory you want the output to end up in.
 
-This is essentially the core logic of `jinjastar`. Now lets look at using the ["content" rendering feature.](/content.html)
+This is essentially the core logic of `jinjastar`. Now lets look at using the ["content" rendering feature.](content.html)

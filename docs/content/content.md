@@ -87,4 +87,4 @@ Jinjastar will render the pages like this:
 ## See a real example
 You can see a real example of this system in action by looking at the `docs` directory in the [github repo](https://github.com/asmedrano/jinjastar).
 
-Next we will look at how we can use `filters` to build dynamic nav based on our files. Read about filters [here](/filters.html).
+Next we will look at how we can use `filters` to build dynamic nav based on our files. Read about filters [here](filters.html).
