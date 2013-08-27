@@ -10,7 +10,7 @@ config = {
     'download_url': '',
     'author_email': 'asmedrano@gmail.com',
     'version': '0.1',
-    'install_requires': ['jinja2'],
+    'install_requires': ['jinja2', 'markdown'],
     'packages': ['jinjastar'],
     'scripts': ['bin/jstar.py'],
     'name': 'jinjastar'
